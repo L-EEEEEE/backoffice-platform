@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { TenantService } from './tenant.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 
@@ -14,5 +14,10 @@ export class TenantController {
   @Get()
   findAll() {
     return this.tenantService.findAll();
+  }
+
+  @Get(':id/members')
+  findOneWithMembers(@Param('id') id: string) {
+    return this.tenantService.findOneWithMembers(+id);
   }
 }
