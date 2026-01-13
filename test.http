@@ -1,0 +1,10 @@
+### GET request to example server
+POST http://127.0.0.1:3000/tenants
+Content-Type: application/json
+
+{
+  "name": "개발팀",
+  "description": "통합 백오피스 개발 담당"
+}
+
+###
