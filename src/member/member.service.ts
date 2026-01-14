@@ -29,4 +29,16 @@ export class MemberService {
 
     return await this.memberRepository.save(newMember);
   }
+
+  async findByEmailWithTenant(email: string): Promise<Member> {
+    const member = await this.memberRepository.findOne({
+      where: { email },
+      relations: ['tenant'],
+    });
+
+    if (!member) {
+      throw new NotFoundException(`Member with email ${email} not found`);
+    }
+    return member;
+  }
 }

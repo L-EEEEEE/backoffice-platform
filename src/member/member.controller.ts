@@ -11,4 +11,9 @@ export class MemberController {
   create(@Body() createMemberDto: CreateMemberDto) {
     return this.memberService.create(createMemberDto);
   }
+
+  @Get('email/:email')
+  findByEmailWithTenant(@Param('email') email: string) {
+    return this.memberService.findByEmailWithTenant(email);
+  }
 }
