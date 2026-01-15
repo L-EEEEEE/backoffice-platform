@@ -1,98 +1,37 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 확장성 있는 멀티 테넌트 기반 백엔드 시스템
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+안정적인 아키텍처와 유연한 확장성을 지향하는 백엔드 서비스입니다.
+Java/Spring 생태계에서 체득한 계층화 설계 원칙을 NestJS에 적용하여, 유지보수가 용이하고 보안이 강화된 시스템을 구축했습니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🛠 Tech Stack
+- **Framework**: NestJS (Node.js)
+- **Language**: TypeScript
+- **Database**: PostgreSQL / TypeORM
+- **Authentication**: JWT, Passport
+- **Environment Management**: @nestjs/config (Environment Variables)
 
-## Description
+## ✨ 핵심 구현 사항
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1. 보안 및 인증 아키텍처 (Security)
+- **JWT & Passport 기반 인증**: Stateless한 인증 방식을 채택하여 서버의 확장성을 확보하고 보안 레이어를 구축했습니다.
+- **환경변수 관리 고도화**: `ConfigService`를 활용해 민감한 정보를 소스코드와 완전 분리하였으며, `registerAsync`를 통해 의존성 주입 시점의 안정성을 확보했습니다.
+- **보안 예외 처리**: 인증 실패 시 보안 위협을 최소화하기 위해 에러 메시지를 정제하고 통합된 예외 처리를 구현했습니다.
 
-## Project setup
+### 2. 도메인 및 데이터베이스 설계 (Domain & DB)
+- **Multi-Tenant 구조**: 조직(Tenant)과 구성원(Member) 간의 관계를 설계하여 데이터 격리의 기초를 마련했습니다.
+- **역방향 조회 최적화**: 서비스 로직에 필요한 양방향 연관관계를 설정하고, 효율적인 데이터 조회를 위해 관계 설정을 최적화했습니다.
+- **데이터 무결성**: ValidationPipe를 전역에 적용하여 인입되는 데이터의 유효성을 엄격하게 검증합니다.
 
-```bash
-$ npm install
-```
+### 3. 개발 표준화 및 생산성 (Standardization)
+- **Global Response Interceptor**: API 응답 규격을 전역적으로 통일하여 클라이언트와의 통신 효율을 극대화했습니다.
+- **관심사의 분리(SoC)**: 인증, 회원, 조직 도메인을 독립적인 모듈로 분리하여 코드의 응집도를 높이고 결합도를 낮췄습니다.
 
-## Compile and run the project
+## 🚦 시작하기
+1. 의존성 설치: `npm install`
+2. 환경변수 설정: `.env` 파일에 `JWT_SECRET`, `JWT_EXPIRATION_TIME` 정의
+3. 서버 실행: `npm run start:dev`
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 💡 개발 철학
+- **안정성**: 예외 상황을 선제적으로 방어하는 코드를 작성합니다.
+- **표준화**: 팀 생산성을 위해 공통 규격과 아키텍처를 중시합니다.
+- **학습과 기록**: 새로운 기술을 기존의 실무 경험과 융합하여 최적의 해답을 찾아내는 과정을 기록합니다.
