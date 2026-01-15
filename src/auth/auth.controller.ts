@@ -2,11 +2,13 @@ import { Controller, Post, Body, Get, UseGuards, Request, UnauthorizedException 
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('login')
   @ApiOperation({ summary: '로그인 및 JWT 발급', description: '이메일을 입력받아 실제 DB에 존재하는 유저인지 확인 후 토큰 반환' })
   @ApiBody({ schema: {example: { email: 'test.example.com' } } })
@@ -20,6 +22,14 @@ export class AuthController {
     }
 
     return this.authService.login(body);
+  }
+
+  @Post('logout')
+  @ApiOperation({ summary: '로그아웃', description: 'DB의 Refresh Token을 삭제하여 세션을 종료합니다.' })
+  @ApiResponse({ status: 200, description: '로그아웃 성공' })
+  async logout(@Request() req) {
+    await this.authService.logout(req.user.userId);
+    return { message: 'Successfully logged out' };
   }
 
   @UseGuards(AuthGuard('jwt'))

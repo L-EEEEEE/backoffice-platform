@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { Tenant } from '../tenant/entities/tenant.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class MemberService {
@@ -40,5 +41,33 @@ export class MemberService {
       throw new NotFoundException(`Member with email ${email} not found`);
     }
     return member;
+  }
+
+  async setCurrentRefreshToken(refreshToken: string, userId: number) {
+    if (!userId) {
+      throw new Error('UserId is required for update refresh token');
+    }
+    const saltOrRounds = 10;
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, saltOrRounds);
+    await this.memberRepository.update(userId, {
+      currentRefreshToken: hashedRefreshToken,
+    });
+  }
+
+  async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
+    const user = await this.memberRepository.findOne({ where: { id: userId } });
+
+    if (!user || !user.currentRefreshToken) return null;
+
+    const isMatched = await bcrypt.compare(refreshToken, user.currentRefreshToken);
+    if (isMatched) return user;
+
+    return null;
+  }
+
+  async removeRefreshToken(userId: number) {
+    return this.memberRepository.update(userId, {
+      currentRefreshToken: null,
+    });
   }
 }

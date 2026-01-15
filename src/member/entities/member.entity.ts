@@ -12,6 +12,9 @@ export class Member {
   @Column()
   email: string;
 
+  @Column({ nullable: true, type: 'varchar' })
+  currentRefreshToken: string | null;
+
   @ManyToOne(() => Tenant, (tenant) => tenant.members)
   tenant: Tenant;
 }
