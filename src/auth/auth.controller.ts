@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Public } from '../common/decorators/public.decorator';
+import { JwtRefreshGuard } from './guards/src/auth/guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -31,6 +32,17 @@ export class AuthController {
     await this.authService.logout(req.user.userId);
     return { message: 'Successfully logged out' };
   }
+
+  @Public()
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @ApiOperation({ summary: 'Access Token 재발급', description: 'Refresh Token을 확인하여 새로운 Access Token을 발급합니다.' })
+  async refresh(@Request() req) {
+    const accessToken = await this.authService.generateAccessToken(req.user);
+    return { access_token: accessToken };
+  }
+
+
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')

@@ -4,6 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TenantModule } from './tenant/tenant.module';
 import { MemberModule } from './member/member.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { JwtRefreshStrategy } from './auth/strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -22,5 +25,7 @@ import { AuthModule } from './auth/auth.module';
     MemberModule,
     AuthModule,
   ],
+  controllers: [AuthController],
+  providers: [JwtStrategy, JwtRefreshStrategy],
 })
 export class AppModule {}

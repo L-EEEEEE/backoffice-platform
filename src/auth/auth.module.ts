@@ -23,5 +23,6 @@ import { MemberModule } from '../member/member.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
