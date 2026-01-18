@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { JwtRefreshStrategy } from './auth/strategies/jwt-refresh.strategy';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JwtRefreshStrategy } from './auth/strategies/jwt-refresh.strategy';
     TenantModule,
     MemberModule,
     AuthModule,
+    PostModule,
   ],
   controllers: [AuthController],
   providers: [JwtStrategy, JwtRefreshStrategy],
