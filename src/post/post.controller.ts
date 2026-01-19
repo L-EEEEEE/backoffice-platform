@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -16,5 +16,12 @@ export class PostController {
   create(@Body() createPostDto: CreatePostDto, @Request() req) {
     // JwtStrategy에서 validate()가 반환한 정보가 req.user에 들어있습니다.
     return this.postService.create(createPostDto, req.user);
+  }
+
+  @Get()
+  @ApiOperation({ summary: '소속 조직 게시글 전체 조회' })
+  findAll(@Request() req) {
+    // JwtStrategy에서 넣어준 req.user.tenantId 사용
+    return this.postService.findAllByTenant(req.user.tenantId);
   }
 }

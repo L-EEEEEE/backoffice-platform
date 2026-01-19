@@ -25,6 +25,14 @@ export class PostService {
     return await this.postRepository.save(post);
   }
 
+  async findAllByTenant(tenantId: number) {
+    return await this.postRepository.find({
+      where: { tenant: { id: tenantId } }, // 내 조직 ID로 필터링
+      relations: ['author'], // 작성자 정보도 함께 가져오기
+      order: { createdAt: 'DESC' }, // 최신글 순으로 정렬
+    });
+  }
+
   findAll() {
     return `This action returns all post`;
   }
